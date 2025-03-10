@@ -151,9 +151,9 @@ export default function App() {
                         value={formData[key]}
                         onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
                       >
-                        <option value="any">Any</option>
-                        <option value="amd">AMD</option>
-                        <option value="intel">Intel</option>
+                        <option value="any">any</option>
+                        <option value="amd">amd</option>
+                        <option value="intel">intel</option>
                       </select>
                     </div>
                   );
@@ -208,8 +208,8 @@ export default function App() {
                         value={formData[key]}
                         onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
                       >
-                        <option value="ssd">SSD</option>
-                        <option value="nvme">NVMe</option>
+                        <option value="ssd">ssd</option>
+                        <option value="nvme">nvme</option>
                       </select>
                     </div>
                   );
