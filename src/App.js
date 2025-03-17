@@ -62,7 +62,7 @@ export default function App() {
     };
 
 
-    await fetch('https://31.129.33.223:8000/calculate', {
+    await fetch('http://31.129.33.223:80/calculate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
