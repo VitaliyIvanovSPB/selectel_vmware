@@ -51,28 +51,6 @@ export default function App() {
       alert('Submission error!');
     }
 
-    // Получаем queryId из Telegram WebApp
-    const queryId = tg?.initDataUnsafe?.query_id;
-    const userId = tg?.initDataUnsafe?.user?.id;
-    // Формируем данные для отправки
-    const data = {
-      data: JSON.stringify(formData),
-      queryId: queryId,
-      userId:userId,
-    };
-
-
-    await fetch('https://31.129.33.223/calculate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      credentials: 'omit'
-    });
-
-
-
   };
 
   return (
