@@ -43,7 +43,7 @@ function CalculatorPage() {
         if (!validate(formData, setErrors)) return;
 
         try {
-            window.Telegram.WebApp.sendData(JSON.stringify(formData));
+            window.Telegram.WebApp.sendData('calc=' + JSON.stringify(formData));
             setIsSuccess(true);
             setFormData(initialData);
         } catch (err) {
@@ -57,9 +57,9 @@ function CalculatorPage() {
 
     return (
         <div className="container mt-5">
-            <button className="btn btn-link mb-3" onClick={() => navigate(-1)}>
+            {/* <button className="btn btn-link mb-3" onClick={() => navigate(-1)}>
                 ← Back
-            </button>
+            </button> */}
             <div className="card shadow-sm">
                 <div className="card-body">
                     <h3 className="card-title text-center text-primary mb-4">VMware Configuration</h3>
