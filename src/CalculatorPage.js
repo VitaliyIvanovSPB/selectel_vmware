@@ -15,8 +15,8 @@ function CalculatorPage() {
         slack_space: "0.2",
         capacity_disk_type: "ssd",
         network_card_qty: "1",
-        works_main: "vsphere",
-        works_add: "no",
+        // works_main: "vsphere",
+        // works_add: "no",
         currency: ""
     };
     const [formData, setFormData] = useState(initialData);

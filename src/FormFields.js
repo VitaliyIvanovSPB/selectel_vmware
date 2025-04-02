@@ -11,8 +11,8 @@ const FormFields = ({ formData, setFormData, errors }) => {
     'slack_space',
     'capacity_disk_type',
     'network_card_qty',
-    'works_main',
-    'works_add',
+    // 'works_main',
+    // 'works_add',
     'currency'
   ];
 
@@ -78,25 +78,25 @@ const FormFields = ({ formData, setFormData, errors }) => {
           );
         }
 
-        if (['works_main', 'works_add'].includes(key)) {
-          const options = ['no', 'vsphere', 'dr', 'veeam', 'alb', 'tanzu',
-            'vdi', 'vdi_public', 'vdi_gpu', 'vdi_gpu_public', 'nsx'];
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label">{key === 'works_main' ? 'Main Workload' : 'Additional Workload'}</label>
-              <select
-                className="form-select"
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-              >
-                {options.map(opt => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
-            </div>
-          );
-        }
+        // if (['works_main', 'works_add'].includes(key)) {
+        //   const options = ['no', 'vsphere', 'dr', 'veeam', 'alb', 'tanzu',
+        //     'vdi', 'vdi_public', 'vdi_gpu', 'vdi_gpu_public', 'nsx'];
+        //   return (
+        //     <div className="col-12" key={key}>
+        //       <label className="form-label">{key === 'works_main' ? 'Main Workload' : 'Additional Workload'}</label>
+        //       <select
+        //         className="form-select"
+        //         name={key}
+        //         value={formData[key]}
+        //         onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+        //       >
+        //         {options.map(opt => (
+        //           <option key={opt} value={opt}>{opt}</option>
+        //         ))}
+        //       </select>
+        //     </div>
+        //   );
+        // }
 
         if (key === 'capacity_disk_type') {
           return (
