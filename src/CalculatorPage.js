@@ -43,7 +43,7 @@ function CalculatorPage() {
         if (!validate(formData, setErrors)) return;
 
         try {
-            window.Telegram.WebApp.sendData('calc=' + JSON.stringify(formData));
+            window.Telegram.WebApp.sendData(JSON.stringify(formData));
             setIsSuccess(true);
             setFormData(initialData);
         } catch (err) {
