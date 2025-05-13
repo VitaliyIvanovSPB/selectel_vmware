@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import FormFields from './FormFields';
 import { validate } from './Validation';
 import { initializeTelegramWebApp, closeTelegramWebApp } from './TelegramWebApp';
@@ -12,7 +13,8 @@ function CalculatorPage() {
         cpu_vendor: "any",
         cpu_min_frequency: "0",
         slack_space: "0.2",
-        currency: "95"
+        capacity_disk_type: "ssd",
+        currency: ""
     };
     const [formData, setFormData] = useState(initialData);
     const [errors, setErrors] = useState({});

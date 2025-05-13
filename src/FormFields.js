@@ -9,6 +9,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
     'cpu_vendor',
     'cpu_min_frequency',
     'slack_space',
+    'capacity_disk_type',
     'USD currency'
   ];
 
@@ -74,6 +75,23 @@ const FormFields = ({ formData, setFormData, errors }) => {
           );
         }
 
+        if (key === 'capacity_disk_type') {
+          return (
+            <div className="col-12" key={key}>
+              <label className="form-label">Disk Type</label>
+              <select
+                className="form-select"
+                name={key}
+                value={formData[key]}
+                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+              >
+                <option value="ssd">ssd</option>
+                <option value="nvme">nvme</option>
+              </select>
+            </div>
+          );
+        }
+
         if (key === 'slack_space') {
           return (
             <div className="col-12" key={key}>
@@ -111,7 +129,6 @@ const FormFields = ({ formData, setFormData, errors }) => {
             </div>
           );
         }
-
 
         return (
           <div className="col-12" key={key}>
