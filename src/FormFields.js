@@ -2,15 +2,16 @@ import React from 'react';
 
 const FormFields = ({ formData, setFormData, errors }) => {
   const fieldOrder = [
-    'vCPU',
-    'vRAM',
-    'vSSD',
-    'CPU Overcommit',
+    'vcpu',
+    'vram',
+    'vssd',
+    'cpu_overcommit',
     'cpu_vendor',
     'cpu_min_frequency',
     'slack_space',
     'capacity_disk_type',
-    'USD currency'
+    'network_card_qty',
+    'currency'
   ];
 
   const handleSlackStep = (step) => () => {
@@ -56,7 +57,22 @@ const FormFields = ({ formData, setFormData, errors }) => {
             </div>
           );
         }
-
+        if (key === 'currency') {
+          return (
+            <div className="col-12" key={key}>
+              <label className="form-label">USD Rate</label>
+              <input
+                type="number"
+                className="form-control"
+                name={key}
+                value={formData[key]}
+                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                step="0.01"
+                placeholder="Optional"
+              />
+            </div>
+          );
+        }
         if (key === 'cpu_min_frequency') {
           return (
             <div className="col-12" key={key}>
@@ -133,7 +149,12 @@ const FormFields = ({ formData, setFormData, errors }) => {
         return (
           <div className="col-12" key={key}>
             <label className="form-label">
-              {key}
+            {key === 'cpu_overcommit' ? 'CPU Overcommit' :
+                key === 'network_card_qty' ? 'Network Card Qty' :
+                key === 'vcpu' ? 'vCPU' :
+                key === 'vram' ? 'vRAM' :
+                key === 'vssd' ? 'vSSD' :
+                key.replace(/_/g, ' ')}
             </label>
             <input
               type="number"

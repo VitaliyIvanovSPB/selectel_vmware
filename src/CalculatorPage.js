@@ -14,7 +14,8 @@ function CalculatorPage() {
         cpu_min_frequency: "0",
         slack_space: "0.2",
         capacity_disk_type: "ssd",
-        currency: ""
+        network_card_qty: "1",
+        currency: "95"
     };
     const [formData, setFormData] = useState(initialData);
     const [errors, setErrors] = useState({});
