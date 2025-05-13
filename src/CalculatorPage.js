@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import FormFields from './FormFields';
 import { validate } from './Validation';
 import { initializeTelegramWebApp, closeTelegramWebApp } from './TelegramWebApp';
@@ -8,12 +8,12 @@ function CalculatorPage() {
     const initialData = {
         vcpu: "100",
         vram: "200",
-        vssd: "1000",
+        vssd: "10000",
         cpu_overcommit: "3",
         cpu_vendor: "any",
         cpu_min_frequency: "0",
         slack_space: "0.2",
-        capacity_disk_type: "ssd",
+        // capacity_disk_type: "ssd",
         network_card_qty: "1",
         // works_main: "vsphere",
         // works_add: "no",
@@ -22,7 +22,7 @@ function CalculatorPage() {
     const [formData, setFormData] = useState(initialData);
     const [errors, setErrors] = useState({});
     const [isSuccess, setIsSuccess] = useState(false);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const tg = window.Telegram?.WebApp;
 
     useEffect(() => {
@@ -43,7 +43,7 @@ function CalculatorPage() {
         if (!validate(formData, setErrors)) return;
 
         try {
-            window.Telegram.WebApp.sendData(JSON.stringify(formData));
+            tg.sendData(JSON.stringify(formData));
             setIsSuccess(true);
             setFormData(initialData);
         } catch (err) {

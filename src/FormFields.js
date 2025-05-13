@@ -2,18 +2,18 @@ import React from 'react';
 
 const FormFields = ({ formData, setFormData, errors }) => {
   const fieldOrder = [
-    'vcpu',
-    'vram',
-    'vssd',
+    'vCPU',
+    'vRAM',
+    'vSSD',
     'cpu_overcommit',
     'cpu_vendor',
     'cpu_min_frequency',
     'slack_space',
-    'capacity_disk_type',
+    // 'capacity_disk_type',
     'network_card_qty',
     // 'works_main',
     // 'works_add',
-    'currency'
+    'USD currency'
   ];
 
   const handleSlackStep = (step) => () => {
@@ -98,22 +98,22 @@ const FormFields = ({ formData, setFormData, errors }) => {
         //   );
         // }
 
-        if (key === 'capacity_disk_type') {
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label">Disk Type</label>
-              <select
-                className="form-select"
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-              >
-                <option value="ssd">ssd</option>
-                <option value="nvme">nvme</option>
-              </select>
-            </div>
-          );
-        }
+        // if (key === 'capacity_disk_type') {
+        //   return (
+        //     <div className="col-12" key={key}>
+        //       <label className="form-label">Disk Type</label>
+        //       <select
+        //         className="form-select"
+        //         name={key}
+        //         value={formData[key]}
+        //         onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+        //       >
+        //         <option value="ssd">ssd</option>
+        //         <option value="nvme">nvme</option>
+        //       </select>
+        //     </div>
+        //   );
+        // }
 
         if (key === 'slack_space') {
           return (
@@ -153,29 +153,29 @@ const FormFields = ({ formData, setFormData, errors }) => {
           );
         }
 
-        if (key === 'currency') {
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label">USD Rate</label>
-              <input
-                type="number"
-                className="form-control"
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-                step="0.01"
-                placeholder="Optional"
-              />
-            </div>
-          );
-        }
+        // if (key === 'currency') {
+        //   return (
+        //     <div className="col-12" key={key}>
+        //       <label className="form-label">USD Rate</label>
+        //       <input
+        //         type="number"
+        //         className="form-control"
+        //         name={key}
+        //         value={formData[key]}
+        //         onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+        //         step="0.01"
+        //         placeholder="Optional"
+        //       />
+        //     </div>
+        //   );
+        // }
 
         return (
           <div className="col-12" key={key}>
             <label className="form-label">
               {key === 'cpu_overcommit' ? 'CPU Overcommit' :
                 key === 'network_card_qty' ? 'Network Card Qty' :
-                  key.replace(/_/g, ' ').toUpperCase()}
+                  key.replace(/_/g, ' ')}
             </label>
             <input
               type="number"
