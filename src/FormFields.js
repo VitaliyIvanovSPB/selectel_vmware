@@ -16,12 +16,13 @@ const FormFields = ({ formData, setFormData, errors }) => {
     'currency'
   ];
 
+  // Обработчик изменения slack_space
   const handleSlackStep = (step) => () => {
     let currentValue = parseFloat(formData.slack_space) || 0;
     currentValue += step;
     if (currentValue < 0) currentValue = 0;
     if (currentValue > 1) currentValue = 1;
-    const rounded = Math.round(currentValue * 20) / 20;
+    const rounded = Math.round(currentValue * 20) / 20; // Округляем до ближайшего 0.05
     setFormData({ ...formData, slack_space: rounded.toFixed(2) });
   };
 
@@ -39,26 +40,229 @@ const FormFields = ({ formData, setFormData, errors }) => {
     }
   };
 
+  // Обработчик изменения cpu_overcommit
+  const handleCpuOvercommitStep = (step) => () => {
+    let currentValue = parseFloat(formData.cpu_overcommit) || 1; // Значение по умолчанию 1
+    currentValue += step;
+    if (currentValue < 1) currentValue = 1; // Минимальное значение 1
+    const rounded = Math.round(currentValue * 10) / 10; // Округляем до ближайшего 0.1
+    setFormData({ ...formData, cpu_overcommit: rounded.toFixed(1) });
+  };
+
+  const handleCpuOvercommitChange = (e) => {
+    let value = e.target.value.replace(',', '.');
+    if (value) {
+      const numValue = parseFloat(value);
+      if (!isNaN(numValue)) {
+        const rounded = Math.round(numValue * 10) / 10; // Округляем до ближайшего 0.1
+        value = rounded.toFixed(1);
+      }
+    }
+    if (/^(\d+([.]\d{0,1})?|)$/.test(value)) {
+      setFormData({ ...formData, cpu_overcommit: value });
+    }
+  };
+
+  // Обработчик изменения network_card_qty
+  const handleNetworkCardStep = (step) => () => {
+    let currentValue = parseInt(formData.network_card_qty, 10) || 1; // Значение по умолчанию 1
+    currentValue += step;
+    if (currentValue < 1) currentValue = 1; // Минимальное значение 1
+    setFormData({ ...formData, network_card_qty: currentValue });
+  };
+
+  // Обработчик изменения cpu_min_frequency
+  const handleCpuMinFrequencyStep = (step) => () => {
+    let currentValue = parseInt(formData.cpu_min_frequency, 10) || 0; // Значение по умолчанию 0
+    currentValue += step;
+    if (currentValue < 0) currentValue = 0; // Минимальное значение 0
+    setFormData({ ...formData, cpu_min_frequency: currentValue });
+  };
+
   return (
     <div className="row g-3">
       {fieldOrder.map((key) => {
         if (key === 'cpu_vendor') {
+          const options = ['any', 'amd', 'intel'];
           return (
             <div className="col-12" key={key}>
               <label className="form-label">CPU Vendor</label>
-              <select
-                className="form-select"
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-              >
-                <option value="any">any</option>
-                <option value="amd">amd</option>
-                <option value="intel">intel</option>
-              </select>
+              <div className="btn-group w-100" role="group">
+                {options.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`btn ${formData[key] === option ? 'btn-primary' : 'btn-outline-secondary'}`}
+                    onClick={() => setFormData({ ...formData, [key]: option })}
+                  >
+                    {option.toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
           );
         }
+
+        if (key === 'capacity_disk_type') {
+          const options = ['ssd', 'nvme'];
+          return (
+            <div className="col-12" key={key}>
+              <label className="form-label">Disk Type</label>
+              <div className="btn-group w-100" role="group">
+                {options.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`btn ${formData[key] === option ? 'btn-primary' : 'btn-outline-secondary'}`}
+                    onClick={() => setFormData({ ...formData, [key]: option })}
+                  >
+                    {option.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        if (key === 'cpu_overcommit') {
+          return (
+            <div className="col-12" key={key}>
+              <label className="form-label d-flex justify-content-between align-items-center">
+                CPU Overcommit
+                <div className="btn-group btn-group-sm">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuOvercommitStep(-0.1)}
+                  >
+                    -0.1
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuOvercommitStep(0.1)}
+                  >
+                    +0.1
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuOvercommitStep(-1)}
+                  >
+                    -1
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuOvercommitStep(1)}
+                  >
+                    +1
+                  </button>
+                </div>
+              </label>
+              <div className="input-group">
+                <input
+                  type="text"
+                  className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
+                  name={key}
+                  value={formData[key]}
+                  onChange={handleCpuOvercommitChange}
+                  placeholder="1.0"
+                />
+              </div>
+              {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
+            </div>
+          );
+        }
+
+        if (key === 'network_card_qty') {
+          return (
+            <div className="col-12" key={key}>
+              <label className="form-label d-flex justify-content-between align-items-center">
+                Network Card Qty
+                <div className="btn-group btn-group-sm">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleNetworkCardStep(-1)}
+                  >
+                    -1
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleNetworkCardStep(1)}
+                  >
+                    +1
+                  </button>
+                </div>
+              </label>
+              <div className="input-group">
+                <input
+                  type="number"
+                  className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
+                  name={key}
+                  value={formData[key]}
+                  readOnly // Делаем поле только для чтения
+                  min="1"
+                />
+              </div>
+              {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
+            </div>
+          );
+        }
+
+        if (key === 'cpu_min_frequency') {
+          return (
+            <div className="col-12" key={key}>
+              <label className="form-label d-flex justify-content-between align-items-center">
+                CPU Min Frequency (MHz)
+                <div className="btn-group btn-group-sm">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuMinFrequencyStep(-100)}
+                  >
+                    -100
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuMinFrequencyStep(100)}
+                  >
+                    +100
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuMinFrequencyStep(-1000)}
+                  >
+                    -1000
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleCpuMinFrequencyStep(1000)}
+                  >
+                    +1000
+                  </button>
+                </div>
+              </label>
+              <div className="input-group">
+                <input
+                  type="number"
+                  className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
+                  name={key}
+                  value={formData[key]}
+                  readOnly // Делаем поле только для чтения
+                  min="0"
+                />
+              </div>
+              {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
+            </div>
+          );
+        }
+
         if (key === 'currency') {
           return (
             <div className="col-12" key={key}>
@@ -75,23 +279,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
             </div>
           );
         }
-        if (key === 'cpu_min_frequency') {
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label">CPU Min Frequency (MHz)</label>
-              <input
-                type="number"
-                className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-                step="100"
-                min="0"
-              />
-              {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
-            </div>
-          );
-        }
+
         if (['works_main', 'works_add'].includes(key)) {
           const options = ['no', 'vsphere', 'dr', 'veeam', 'alb', 'tanzu',
             'vdi', 'vdi_public', 'vdi_gpu', 'vdi_gpu_public', 'nsx'];
@@ -107,22 +295,6 @@ const FormFields = ({ formData, setFormData, errors }) => {
                 {options.map(opt => (
                   <option key={opt} value={opt}>{opt}</option>
                 ))}
-              </select>
-            </div>
-          );
-        }
-        if (key === 'capacity_disk_type') {
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label">Disk Type</label>
-              <select
-                className="form-select"
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-              >
-                <option value="ssd">ssd</option>
-                <option value="nvme">nvme</option>
               </select>
             </div>
           );
@@ -169,9 +341,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
         return (
           <div className="col-12" key={key}>
             <label className="form-label">
-            {key === 'cpu_overcommit' ? 'CPU Overcommit' :
-                key === 'network_card_qty' ? 'Network Card Qty' :
-                key === 'vcpu' ? 'vCPU' :
+              {key === 'vcpu' ? 'vCPU' :
                 key === 'vram' ? 'vRAM' :
                 key === 'vssd' ? 'vSSD' :
                 key.replace(/_/g, ' ')}

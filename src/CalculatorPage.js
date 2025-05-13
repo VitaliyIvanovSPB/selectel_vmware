@@ -11,7 +11,7 @@ function CalculatorPage() {
         vssd: "10000",
         cpu_overcommit: "3",
         cpu_vendor: "any",
-        cpu_min_frequency: "0",
+        cpu_min_frequency: "2000",
         slack_space: "0.2",
         capacity_disk_type: "ssd",
         network_card_qty: "1",
