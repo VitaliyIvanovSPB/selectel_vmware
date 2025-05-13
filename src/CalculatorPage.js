@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import FormFields from './FormFields';
 import { validate } from './Validation';
 import { initializeTelegramWebApp, closeTelegramWebApp } from './TelegramWebApp';
@@ -13,16 +12,11 @@ function CalculatorPage() {
         cpu_vendor: "any",
         cpu_min_frequency: "0",
         slack_space: "0.2",
-        // capacity_disk_type: "ssd",
-        network_card_qty: "1",
-        // works_main: "vsphere",
-        // works_add: "no",
-        currency: ""
+        currency: "95"
     };
     const [formData, setFormData] = useState(initialData);
     const [errors, setErrors] = useState({});
     const [isSuccess, setIsSuccess] = useState(false);
-    // const navigate = useNavigate();
     const tg = window.Telegram?.WebApp;
 
     useEffect(() => {
@@ -57,9 +51,6 @@ function CalculatorPage() {
 
     return (
         <div className="container mt-5">
-            {/* <button className="btn btn-link mb-3" onClick={() => navigate(-1)}>
-                ← Back
-            </button> */}
             <div className="card shadow-sm">
                 <div className="card-body">
                     <h3 className="card-title text-center text-primary mb-4">VMware Configuration</h3>
