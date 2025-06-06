@@ -55,10 +55,10 @@ function CalculatorPage() {
 
 
     return (
-        <div className="container mt-5">
+        <div className="container mt-4">
             <div className="card shadow-sm">
                 <div className="card-body">
-                    <h3 className="card-title text-center text-primary mb-4">VMware Configuration</h3>
+                    {/* <h3 className="card-title text-center text-primary mb-4">VMware Configuration</h3> */}
                     {isSuccess && (
                         <div className="alert alert-success" role="alert">
                             Data sent successfully! Closing...
