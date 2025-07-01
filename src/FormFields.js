@@ -9,36 +9,9 @@ const FormFields = ({ formData, setFormData, errors }) => {
     'cpu_vendor',
     'capacity_disk_type',
     'cpu_min_frequency',
-    'slack_space',
     'network_card_qty',
     'works_main',
-    'works_add',
-    'currency'
   ];
-
-  // Обработчик изменения slack_space
-  const handleSlackStep = (step) => () => {
-    let currentValue = parseFloat(formData.slack_space) || 0;
-    currentValue += step;
-    if (currentValue < 0) currentValue = 0;
-    if (currentValue > 1) currentValue = 1;
-    const rounded = Math.round(currentValue * 20) / 20; // Округляем до ближайшего 0.05
-    setFormData({ ...formData, slack_space: rounded.toFixed(2) });
-  };
-
-  const handleSlackChange = (e) => {
-    let value = e.target.value.replace(',', '.');
-    if (value) {
-      const numValue = parseFloat(value);
-      if (!isNaN(numValue)) {
-        const rounded = Math.round(numValue * 20) / 20; // Округляем до ближайшего 0.05
-        value = rounded.toFixed(2);
-      }
-    }
-    if (/^(\d+([.]\d{0,2})?|)$/.test(value)) {
-      setFormData({ ...formData, slack_space: value });
-    }
-  };
 
   // Обработчик изменения cpu_overcommit
   const handleCpuOvercommitStep = (step) => () => {
@@ -46,7 +19,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
     currentValue += step;
     if (currentValue < 1) currentValue = 1; // Минимальное значение 1
     const rounded = Math.round(currentValue * 10) / 10; // Округляем до ближайшего 0.1
-    setFormData({ ...formData, cpu_overcommit: rounded.toFixed(1) });
+    setFormData({ ...formData, cpu_overcommit: rounded.toFixed(0) });
   };
 
   const handleCpuOvercommitChange = (e) => {
@@ -55,7 +28,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
       const numValue = parseFloat(value);
       if (!isNaN(numValue)) {
         const rounded = Math.round(numValue * 10) / 10; // Округляем до ближайшего 0.1
-        value = rounded.toFixed(1);
+        value = rounded.toFixed(0);
       }
     }
     if (/^(\d+([.]\d{0,1})?|)$/.test(value)) {
@@ -128,22 +101,8 @@ const FormFields = ({ formData, setFormData, errors }) => {
           return (
             <div className="col-12" key={key}>
               <label className="form-label d-flex justify-content-between align-items-center">
-                CPU Overcommit
+                Переподписка ЦП
                 <div className="btn-group btn-group-sm">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={handleCpuOvercommitStep(-0.1)}
-                  >
-                    -0.1
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={handleCpuOvercommitStep(0.1)}
-                  >
-                    +0.1
-                  </button>
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
@@ -263,29 +222,14 @@ const FormFields = ({ formData, setFormData, errors }) => {
           );
         }
 
-        if (key === 'currency') {
+        
+        if (key === 'works_main') {
+          const options = ['vsphere', 'vdi'];
           return (
             <div className="col-12" key={key}>
-              <label className="form-label">USD Rate</label>
-              <input
-                type="number"
-                className="form-control"
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-                step="0.01"
-                placeholder="Optional"
-              />
-            </div>
-          );
-        }
-
-        if (['works_main', 'works_add'].includes(key)) {
-          const options = ['no', 'vsphere', 'dr', 'veeam', 'alb', 'tanzu',
-            'vdi', 'vdi_public', 'vdi_gpu', 'vdi_gpu_public', 'nsx'];
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label">{key === 'works_main' ? 'Main Workload' : 'Additional Workload'}</label>
+              <label className="form-label">
+                Тип ЧО
+                </label>
               <select
                 className="form-select"
                 name={key}
@@ -299,45 +243,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
             </div>
           );
         }
-
-        if (key === 'slack_space') {
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label d-flex justify-content-between align-items-center">
-                Slack Space
-                <div className="btn-group btn-group-sm">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={handleSlackStep(-0.05)}
-                  >
-                    -0.05
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={handleSlackStep(0.05)}
-                  >
-                    +0.05
-                  </button>
-                </div>
-              </label>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
-                  name={key}
-                  value={formData[key]}
-                  onChange={handleSlackChange}
-                  placeholder="0.00"
-                />
-                <span className="input-group-text">%</span>
-              </div>
-              {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
-            </div>
-          );
-        }
-
+        
         return (
           <div className="col-12" key={key}>
             <label className="form-label">

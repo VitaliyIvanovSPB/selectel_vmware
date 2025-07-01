@@ -6,18 +6,15 @@ import { initializeTelegramWebApp, closeTelegramWebApp } from './TelegramWebApp'
 
 function CalculatorPage() {
     const initialData = {
-        vcpu: "100",
-        vram: "200",
-        vssd: "10000",
+        vcpu: "200",
+        vram: "400",
+        vssd: "20000",
         cpu_overcommit: "3",
         cpu_vendor: "any",
         cpu_min_frequency: "2000",
-        slack_space: "0.2",
         capacity_disk_type: "ssd",
         network_card_qty: "1",
         works_main: "vsphere",
-        works_add: "no",
-        currency: "95"
     };
     const [formData, setFormData] = useState(initialData);
     const [errors, setErrors] = useState({});
