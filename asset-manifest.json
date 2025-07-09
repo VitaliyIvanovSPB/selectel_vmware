@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/selectel_vmware/static/css/main.67e76332.css",
-    "main.js": "/selectel_vmware/static/js/main.62d3e325.js",
+    "main.css": "/selectel_vmware/static/css/main.4ad3bb8e.css",
+    "main.js": "/selectel_vmware/static/js/main.f242ece9.js",
     "static/js/453.fe7dcd64.chunk.js": "/selectel_vmware/static/js/453.fe7dcd64.chunk.js",
     "index.html": "/selectel_vmware/index.html",
-    "main.67e76332.css.map": "/selectel_vmware/static/css/main.67e76332.css.map",
-    "main.62d3e325.js.map": "/selectel_vmware/static/js/main.62d3e325.js.map",
+    "main.4ad3bb8e.css.map": "/selectel_vmware/static/css/main.4ad3bb8e.css.map",
+    "main.f242ece9.js.map": "/selectel_vmware/static/js/main.f242ece9.js.map",
     "453.fe7dcd64.chunk.js.map": "/selectel_vmware/static/js/453.fe7dcd64.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.67e76332.css",
-    "static/js/main.62d3e325.js"
+    "static/css/main.4ad3bb8e.css",
+    "static/js/main.f242ece9.js"
   ]
 }
