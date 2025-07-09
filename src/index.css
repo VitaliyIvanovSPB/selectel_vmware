@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.btn-outline-secondary:active {
+  background-color: #e9ecef;
+  color: #495057;
+  border-color: #ced4da;
+}

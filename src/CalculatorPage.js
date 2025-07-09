@@ -55,10 +55,9 @@ function CalculatorPage() {
         <div className="container mt-4">
             <div className="card shadow-sm">
                 <div className="card-body">
-                    {/* <h3 className="card-title text-center text-primary mb-4">VMware Configuration</h3> */}
                     {isSuccess && (
                         <div className="alert alert-success" role="alert">
-                            Data sent successfully! Closing...
+                            Данные отправлены! Закрываю окно...
                         </div>
                     )}
                     <form onSubmit={handleSubmit}>
@@ -69,7 +68,7 @@ function CalculatorPage() {
                                 className="btn btn-primary"
                                 disabled={Object.keys(errors).length > 0}
                             >
-                                Calculate Cost
+                                Рассчитать стоимость
                             </button>
                         </div>
                     </form>

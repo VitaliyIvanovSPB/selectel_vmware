@@ -13,43 +13,11 @@ const FormFields = ({ formData, setFormData, errors }) => {
     'works_main',
   ];
 
-  // Обработчик изменения cpu_overcommit
-  const handleCpuOvercommitStep = (step) => () => {
-    let currentValue = parseFloat(formData.cpu_overcommit) || 1; // Значение по умолчанию 1
-    currentValue += step;
-    if (currentValue < 1) currentValue = 1; // Минимальное значение 1
-    const rounded = Math.round(currentValue * 10) / 10; // Округляем до ближайшего 0.1
-    setFormData({ ...formData, cpu_overcommit: rounded.toFixed(0) });
-  };
-
-  const handleCpuOvercommitChange = (e) => {
-    let value = e.target.value.replace(',', '.');
-    if (value) {
-      const numValue = parseFloat(value);
-      if (!isNaN(numValue)) {
-        const rounded = Math.round(numValue * 10) / 10; // Округляем до ближайшего 0.1
-        value = rounded.toFixed(0);
-      }
-    }
-    if (/^(\d+([.]\d{0,1})?|)$/.test(value)) {
-      setFormData({ ...formData, cpu_overcommit: value });
-    }
-  };
-
-  // Обработчик изменения network_card_qty
-  const handleNetworkCardStep = (step) => () => {
-    let currentValue = parseInt(formData.network_card_qty, 10) || 1; // Значение по умолчанию 1
-    currentValue += step;
-    if (currentValue < 1) currentValue = 1; // Минимальное значение 1
-    setFormData({ ...formData, network_card_qty: currentValue });
-  };
-
-  // Обработчик изменения cpu_min_frequency
-  const handleCpuMinFrequencyStep = (step) => () => {
-    let currentValue = parseInt(formData.cpu_min_frequency, 10) || 0; // Значение по умолчанию 0
-    currentValue += step;
-    if (currentValue < 0) currentValue = 0; // Минимальное значение 0
-    setFormData({ ...formData, cpu_min_frequency: currentValue });
+  // Универсальный обработчик изменения значений с шагом
+  const handleStep = (field, step) => () => {
+    const currentValue = parseInt(formData[field], 10) || 0;
+    const newValue = Math.max(currentValue + step, 0); // Минимум 0
+    setFormData({ ...formData, [field]: newValue });
   };
 
   return (
@@ -59,7 +27,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
           const options = ['any', 'amd', 'intel'];
           return (
             <div className="col-12" key={key}>
-              <label className="form-label">CPU Vendor</label>
+              <label className="form-label">Производитель ЦП</label>
               <div className="btn-group w-100" role="group">
                 {options.map((option) => (
                   <button
@@ -80,7 +48,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
           const options = ['ssd', 'nvme'];
           return (
             <div className="col-12" key={key}>
-              <label className="form-label">Disk Type</label>
+              <label className="form-label">Тип дисков vSAN</label>
               <div className="btn-group w-100" role="group">
                 {options.map((option) => (
                   <button
@@ -106,51 +74,14 @@ const FormFields = ({ formData, setFormData, errors }) => {
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={handleCpuOvercommitStep(-1)}
+                    onClick={handleStep('cpu_overcommit', -1)}
                   >
                     -1
                   </button>
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={handleCpuOvercommitStep(1)}
-                  >
-                    +1
-                  </button>
-                </div>
-              </label>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
-                  name={key}
-                  value={formData[key]}
-                  onChange={handleCpuOvercommitChange}
-                  placeholder="1.0"
-                />
-              </div>
-              {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
-            </div>
-          );
-        }
-
-        if (key === 'network_card_qty') {
-          return (
-            <div className="col-12" key={key}>
-              <label className="form-label d-flex justify-content-between align-items-center">
-                Network Card Qty
-                <div className="btn-group btn-group-sm">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={handleNetworkCardStep(-1)}
-                  >
-                    -1
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={handleNetworkCardStep(1)}
+                    onClick={handleStep('cpu_overcommit', 1)}
                   >
                     +1
                   </button>
@@ -162,7 +93,44 @@ const FormFields = ({ formData, setFormData, errors }) => {
                   className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
                   name={key}
                   value={formData[key]}
-                  readOnly // Делаем поле только для чтения
+                  readOnly
+                  min="1"
+                />
+              </div>
+              {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
+            </div>
+          );
+        }
+
+        if (key === 'network_card_qty') {
+          return (
+            <div className="col-12" key={key}>
+              <label className="form-label d-flex justify-content-between align-items-center">
+                Кол-во сетевых карт
+                <div className="btn-group btn-group-sm">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleStep('network_card_qty', -1)}
+                  >
+                    -1
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleStep('network_card_qty', 1)}
+                  >
+                    +1
+                  </button>
+                </div>
+              </label>
+              <div className="input-group">
+                <input
+                  type="number"
+                  className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
+                  name={key}
+                  value={formData[key]}
+                  readOnly
                   min="1"
                 />
               </div>
@@ -175,33 +143,33 @@ const FormFields = ({ formData, setFormData, errors }) => {
           return (
             <div className="col-12" key={key}>
               <label className="form-label d-flex justify-content-between align-items-center">
-                CPU Min Frequency (MHz)
+                Минимальная частота ЦП (MHz)
                 <div className="btn-group btn-group-sm">
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={handleCpuMinFrequencyStep(-100)}
+                    onClick={handleStep('cpu_min_frequency', -100)}
                   >
                     -100
                   </button>
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={handleCpuMinFrequencyStep(100)}
+                    onClick={handleStep('cpu_min_frequency', 100)}
                   >
                     +100
                   </button>
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={handleCpuMinFrequencyStep(-1000)}
+                    onClick={handleStep('cpu_min_frequency', -1000)}
                   >
                     -1000
                   </button>
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={handleCpuMinFrequencyStep(1000)}
+                    onClick={handleStep('cpu_min_frequency', 1000)}
                   >
                     +1000
                   </button>
@@ -213,7 +181,7 @@ const FormFields = ({ formData, setFormData, errors }) => {
                   className={`form-control ${errors[key] ? 'is-invalid' : ''}`}
                   name={key}
                   value={formData[key]}
-                  readOnly // Делаем поле только для чтения
+                  readOnly
                   min="0"
                 />
               </div>
@@ -222,28 +190,31 @@ const FormFields = ({ formData, setFormData, errors }) => {
           );
         }
 
-        
         if (key === 'works_main') {
-          const options = ['vsphere', 'vdi'];
+          const options = [
+            { value: 'vsphere', label: 'ЧО' },
+            { value: 'vdi', label: 'VDI' },
+          ];
           return (
             <div className="col-12" key={key}>
-              <label className="form-label">
-                Тип ЧО
-                </label>
-              <select
-                className="form-select"
-                name={key}
-                value={formData[key]}
-                onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
-              >
-                {options.map(opt => (
-                  <option key={opt} value={opt}>{opt}</option>
+              <label className="form-label">Тип ЧО</label>
+              <div className="btn-group w-100" role="group">
+                {options.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`btn ${formData[key] === option.value ? 'btn-primary' : 'btn-outline-secondary'}`}
+                    onClick={() => setFormData({ ...formData, [key]: option.value })}
+                  >
+                    {option.label}
+                  </button>
                 ))}
-              </select>
+              </div>
             </div>
           );
         }
-        
+
+        // Стандартные числовые поля
         return (
           <div className="col-12" key={key}>
             <label className="form-label">
